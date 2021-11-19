@@ -8,7 +8,7 @@ The implementation is based on the [JS implementation](https://github.com/sunesi
 ## Install
 
 ```bash
-pip install ukkonen_rs
+pip install ukkonen-rs
 ```
 
 ## Build

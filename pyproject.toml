@@ -1,0 +1,33 @@
+[build-system]
+requires = ["maturin>=0.11,<0.12"]
+build-backend = "maturin"
+
+[project]
+name = "ukkonen_rs"
+version = "0.1.0.post1"
+description = "Fast approximate edit distance."
+readme = "README.md"
+requires-python = ">=3.6"
+license = { file = "LICENSE" }
+keywords = ["levenshtein", "editdistance"]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Rust',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: MacOS',
+]
+
+[project.urls]
+Source = "https://github.com/ethanhs/ukkonen"
+
+[[project.authors]]
+name = "Ethan Smith"
+email = "ethan@ethanhs.me"
