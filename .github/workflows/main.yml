@@ -1,0 +1,50 @@
+name: run tests
+
+on:
+  push:
+    paths-ignore:
+      - '.pre-commit-config.yaml'
+    branches:
+      - main
+  pull_request:
+    paths-ignore:
+      - '.pre-commit-config.yaml'
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      fail-fast: false
+    steps:
+        - name: checkout
+          uses: actions/checkout@v2
+          with:
+            submodules: true
+        - name: setup python
+          uses: actions/setup-python@v1
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Install nightly-2021-11-02
+          uses: actions-rs/toolchain@v1
+          with:
+              toolchain: nightly-2021-11-02
+              default: true
+        - name: Build wheels on macos and Linux
+          run: pip install maturin && maturin build --cargo-extra-args="--features python" --release --no-sdist
+          env:
+            RUST_BACKTRACE: 1
+          if: !startsWith(matrix.os, 'ubuntu')
+        - name: Build manylinux wheel
+          run: docker run --rm -v $(pwd):/io -e RUST_BACKTRACE=1 konstin2/maturin build --cargo-extra-args="--features python" --release --no-sdist
+          if: startsWith(matrix.os, 'ubuntu')
+        - name: Install built wheels
+          run: pip install --no-index --find-links=target/wheels ukkonen_rs
+        - name: upload wheel artifacts
+          uses: actions/upload-artifact@v1
+          with:
+            name: ukkonen-wheels-${{matrix.os}}
+            path: target/wheels

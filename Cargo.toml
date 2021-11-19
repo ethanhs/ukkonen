@@ -1,0 +1,33 @@
+[package]
+name = "ukkonen_rs"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+python = ["pyo3"]
+
+[dependencies.pyo3]
+version = "0.15.0"
+optional = true
+features = ["extension-module", "abi3-py36"]
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.3"
+eddie = "0.4.2"
+rand = "0.7"
+
+[[bench]]
+name = "dist"
+harness = false
+
+[lib]
+name = "ukkonen_rs"
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+opt-level = 3
+debug = true
